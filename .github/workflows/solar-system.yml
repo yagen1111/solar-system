@@ -7,6 +7,10 @@ on:
       - main
       - 'feature/*'
     
+env:
+    MONGO_URI: mongodb+srv://yagen1111:REY9u59pG50bVTuq@cluster0.uw8v3gr.mongodb.net/superData
+    MONGO_USERNAME: yagen1111
+    MONGO_PASSWORD: REY9u59pG50bVTuq
 jobs:
     unit-testing:
         name: Unit Testing
@@ -26,8 +30,8 @@ jobs:
         - name: Unit Testing
           run: npm test
           
-        - name: Archive Test Result
-          uses: actions/upload-artifact@v3
-          with:
-            name: Mocha-Test-Result
-            path: test-results.xml
+        # - name: Archive Test Result
+        #   uses: actions/upload-artifact@v3
+        #   with:
+        #     name: Mocha-Test-Result
+        #     path: test-results.xml
