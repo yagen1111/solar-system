@@ -117,3 +117,4 @@ jobs:
 
           echo "Waiting for the application to start..."
           wget -q -o - 127.0.0.1:3000/live | grep live
+          
