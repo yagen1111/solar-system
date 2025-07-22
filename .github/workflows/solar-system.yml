@@ -35,7 +35,7 @@ jobs:
     code-coverage:
      name: Code Coverage
      runs-on: ubuntu-latest
-     continue-on-error: true
+      if always()
      steps:
      - name: Checkout Repository
        uses: actions/checkout@v4
