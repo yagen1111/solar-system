@@ -33,9 +33,9 @@ jobs:
         #     name: Mocha-Test-Result
         #     path: test-results.xml
     code-coverage:
-     continue-on-error: true
      name: Code Coverage
      runs-on: ubuntu-latest
+     continue-on-error: true
      steps:
      - name: Checkout Repository
        uses: actions/checkout@v4
