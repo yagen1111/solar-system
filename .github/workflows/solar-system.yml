@@ -41,6 +41,7 @@ jobs:
             name: Mocha-Test-Result
             path: test-results.xml
     code-coverage:
+     needs: unit-testing
      name: Code Coverage
      runs-on: ubuntu-latest
      
