@@ -7,7 +7,7 @@ on:
       - main
       - 'feature/*'
 env:
-  MONGO_URI: mongodb+srv://yagen1111:<db_password>@cluster0.uw8v3gr.mongodb.net/superData
+  MONGO_URI: mongodb+srv://yagen1111:REY9u59pG50bVTuq@cluster0.uw8v3gr.mongodb.net/superData
   MONGO_USERNAME: yagen1111
   MONGO_PASSWORD: ${{ secrets.MONGO_PASSWORD }}
 jobs:
