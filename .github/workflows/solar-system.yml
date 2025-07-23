@@ -156,19 +156,21 @@ jobs:
         - name: Checkout Repository
           uses: actions/checkout@v4
 
-        - name: install kubectl cli
-          uses: azure/setup-kubectl@v4
-          with:
-            version: 'v1.26.0'
-        - name: Set up Kubeconfig
-          uses: azure/k8s-set-context@v4
-          with:
-            method: kubeconfig
-            kubeconfig: ${{ secrets.KUBECONFIG }}
-            
-        - name: Set up Kubeconfig
-          run: |
-            kubectl version --short -o yaml
-            echo ------------------------
-            kubectl get nodes
-            
+        - name: Set up Kubernetes cluster with Kind
+          uses: helm/kind-action@v1.8.0
+      
+        - name: check up Kubeconfig
+          run:  kubectl get nodes
+
+          
+    #         echo ------------------------
+    #         kubectl get nodes
+    #     - name: replace
+    #       uses: cscheleiden/replace-token@v1
+    #       with:
+    #         tokenPrefix: '{'
+    #         tokenSuffix: '}'
+    #         files: '["kubernetes/deployment/*.yaml"]'
+    #       env:
+    #         CDN: https://somecdn.com/...
+ 
