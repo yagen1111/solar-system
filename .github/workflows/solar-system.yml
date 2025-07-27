@@ -170,7 +170,7 @@ jobs:
         
 
         - name: replace
-          uses: cscheleiden/replace-token@v1
+          uses: cschleiden/replace-tokens@v1
           with:
             tokenPrefix: '_{_'
             tokenSuffix: '_}_'
