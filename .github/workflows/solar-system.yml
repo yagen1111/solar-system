@@ -162,15 +162,22 @@ jobs:
         - name: check up Kubeconfig
           run:  kubectl get nodes
 
-          
-    #         echo ------------------------
-    #         kubectl get nodes
-    #     - name: replace
-    #       uses: cscheleiden/replace-token@v1
-    #       with:
-    #         tokenPrefix: '{'
-    #         tokenSuffix: '}'
-    #         files: '["kubernetes/deployment/*.yaml"]'
-    #       env:
-    #         CDN: https://somecdn.com/...
+
+        - name: Get ingress IP
+          run: |
+            echo "INGRESS_IP=$(kubectl get svc -n ingress-nginx ingress-nginx-controller -o jsonpath="{.status.loadBalancer.ingress[0].ip}")" >> $GITHUB_ENV
+
+        
+
+        - name: replace
+          uses: cscheleiden/replace-token@v1
+          with:
+            tokenPrefix: '_{_'
+            tokenSuffix: '_}_'
+            files: '["kubernetes/deployment/*.yaml"]'
+          env:
+            NAMESPACE: ${{ secrets.NAMESPACE }}
+            REPLICAS: ${{ secrets.REPLICAS }}
+            IMAGE: ${{ secrets.DOCKER_USERNAME }}/solar-system:${{ github.sha }}
+            INGRESS_IP: ${ env.INGRESS_IP }
  
