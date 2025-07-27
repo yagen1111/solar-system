@@ -162,11 +162,28 @@ jobs:
         - name: check up Kubeconfig
           run:  kubectl get nodes
 
-
-        - name: Get ingress IP
+        - name: Install ingress-nginx (for kind)
           run: |
-            echo "INGRESS_IP=$(kubectl get svc -n default ingress-nginx-controller -o jsonpath="{.status.loadBalancer.ingress[0].ip}")" >> $GITHUB_ENV
+            kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.9.6/deploy/static/provider/kind/deploy.yaml
 
+        - name: Wait for ingress-nginx controller to be ready
+          run: |
+            kubectl wait --namespace ingress-nginx \
+            --for=condition=Ready pod \
+            --selector=app.kubernetes.io/component=controller \
+            --timeout=180s
+
+        - name: Get Ingress NodePort and expose as INGRESS_URL
+          run: |
+            NODE_PORT=$(kubectl get svc ingress-nginx-controller \
+            -n ingress-nginx \
+            -o jsonpath="{.spec.ports[?(@.port==80)].nodePort}")
+            echo "INGRESS_URL=http://localhost:$NODE_PORT" >> $GITHUB_ENV
+            echo "Ingress available at http://localhost:$NODE_PORT"
+
+        # - name: Get ingress IP
+        #   run: |
+        #     echo "INGRESS_IP=$(kubectl get svc -n default ingress-nginx-controller -o jsonpath="{.status.loadBalancer.ingress[0].ip}")" >> $GITHUB_ENV
         
 
         - name: replace
