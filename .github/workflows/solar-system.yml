@@ -181,10 +181,6 @@ jobs:
             echo "INGRESS_URL=http://localhost:$NODE_PORT" >> $GITHUB_ENV
             echo "Ingress available at http://localhost:$NODE_PORT"
 
-        # - name: Get ingress IP
-        #   run: |
-        #     echo "INGRESS_IP=$(kubectl get svc -n default ingress-nginx-controller -o jsonpath="{.status.loadBalancer.ingress[0].ip}")" >> $GITHUB_ENV
-        
 
         - name: replace
           uses: cschleiden/replace-tokens@v1
@@ -196,7 +192,7 @@ jobs:
             NAMESPACE: ${{ vars.NAMESPACE }}
             REPLICAS: ${{ vars.REPLICAS }}
             IMAGE: ${{ secrets.DOCKER_USERNAME }}/solar-system:${{ github.sha }}
-            INGRESS_IP: ${{ env.NODE_PORT }}
+            INGRESS_IP: ${{ env.INGRESS_URL }}
 
         - name: create mongo secret
           run: |
