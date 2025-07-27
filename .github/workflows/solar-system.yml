@@ -165,7 +165,7 @@ jobs:
 
         - name: Get ingress IP
           run: |
-            echo "INGRESS_IP=$(kubectl get svc -n ingress-nginx ingress-nginx-controller -o jsonpath="{.status.loadBalancer.ingress[0].ip}")" >> $GITHUB_ENV
+            echo "INGRESS_IP=$(kubectl get svc -n default ingress-nginx-controller -o jsonpath="{.status.loadBalancer.ingress[0].ip}")" >> $GITHUB_ENV
 
         
 
@@ -180,4 +180,16 @@ jobs:
             REPLICAS: ${{ secrets.REPLICAS }}
             IMAGE: ${{ secrets.DOCKER_USERNAME }}/solar-system:${{ github.sha }}
             INGRESS_IP: ${ env.INGRESS_IP }
+
+        - name: create mongo secret
+          run: |
+            kubectl -n ${{var.NAMESPACE }} create secret generic mongo-db-creds \
+              --from-literal=MONGO_URI=${{ env.MONGO_URI }} \
+              --from-literal=MONGO_USERNAME=${{env.MONGO_USERNAME }} \
+              --from-literal=MONGO_PASSWORD=${{secret.MONGO_PASSWORD }} \
+              --save-config \
+              --dry-run=client -o yaml | kubectl apply -f -
+        - name: deploy files
+          run: |
+            kubectl apply -f kubernetes/development
  
